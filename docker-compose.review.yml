@@ -1,0 +1,17 @@
+# Override Docker Compose pour review via Traefik
+# Généré automatiquement par Hexapilot
+# Le hostname est injecté via la variable d'env REVIEW_HOST
+
+services:
+  app:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${REVIEW_HOST}`)"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8080"
+    networks:
+      - default
+      - traefik_network
+
+networks:
+  traefik_network:
+    external: true
